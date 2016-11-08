@@ -1,0 +1,178 @@
+/* CSS Document */
+body,h1,h2,h3,h4,h5,h6,hr,p,blockquote,dl,dt,dd,ul,ol,li,form,fieldset,legend,button,input,select,textarea,th,td,img{border:0px;margin:0px;padding:0px}
+body,button,input,select,textarea{font:12px/1.5 tahoma, Srial, helvetica, sans-serif;color:#333; }
+button,input,img{border:none}
+em,i{font-style:normal;}
+ul,ol,li{list-style:none}
+table{border-collapse:collapse;border-spacing: 0;}
+.clear{clear:both}
+a, a:focus {
+    text-decoration: none;
+    color: #000;
+    outline: none;}
+ .red{color:#f00}
+ .green{color:green}
+ .ellipsis{display:block;width:300px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* top */
+.headBg{width:100%;min-width:800px;background: url("../images/headbg.png") repeat-x left top;}
+.headBg{width:100%;min-width:800px;background: url("../images/headbg.png") repeat-x left top;}
+.headLogoimg {float:left;width:268px;height:70px;margin-top:0px;padding:0px 0px 0px 3px;background:url("../images/logoimg.png") no-repeat;}
+.headWelcome{font-size:12px; color:#f1dac2; float:right;margin-top:27px; margin-right:10px; width:auto; }
+.headWelcome span{padding:0px 15px 0px 15px;   width:auto;}
+.headWelcome a:link{color:#f1dac2; }
+.headWelcome a:hover{color:#0e2d48; }
+.headWelcome a:active{color:#0e2d48; }
+.headWelcome a:visited {color:#f1dac2; }
+
+/* left */
+.lefttop{float:left;width:200px;background:#bf3822;height:40px;color:#fff;font-size:14px;line-height:40px;}
+.lefttop span{margin-left:8px; margin-top:10px;margin-right:8px; background:url(../images/leftico.png) no-repeat; width:20px; height:21px;float:left;}
+.list{width:200px;}
+.list .first_ul{position:relative;}
+.list .first_ul>li{background:#db4128;border-top:1px solid #bf3822}
+.list .first_ul>li>a{outline:none;blr:expression(this.onFocus=this.blur());}
+.list .first_ul>li>a{color:white;display: block;
+    height:40px;line-height: 36px;position: relative;text-indent: 20px;font-size:15px}
+/*.list li.selected{background:url(../images/syleftimg_menubk2.gif) no-repeat 0px 0px;position:relative;z-index:0;}*/
+.list li.selected2{background:#e2e0e0}
+
+.list .second_ul{background:#f6f0f0;display: none;}
+.list .second_ul>li {border-left:0;border-right:0;border-color:#C1382A;}
+.list .second_ul>li>a{line-height:32px;height:30px;padding-left:25px;}
+
+.list .three_ul{display: none;position: relative;background:white;}
+.list .three_ul > li > a {padding-left:60px;height:30px;line-height:30px;}
+
+.list ul li img{position: relative;}
+.list ul li img.Icon01{position: relative;left: 10px;top: 7px;float: left;}
+.list ul li img.Icon02{position: relative;left: 21px;top: 9px;float: left;}
+.list ul li .inactive{background:url(../images/off.png) no-repeat 175px center;
+	position:relative;z-index:99;}
+.list ul li .inactives{background:url(../images/on.png) no-repeat 175px center;
+	position:relative;z-index:99;}
+
+/*right*/
+.rightinfo{padding:8px;}
+/*site*/
+.place{height:40px; background:url(../images/righttop.gif) repeat-x;}
+.place span{line-height:40px; font-weight:bold;float:left; margin-left:12px;}
+.placeul li{float:left; line-height:40px; padding-left:7px; padding-right:12px; background:url(../images/rlist.gif) no-repeat right;}
+.placeul li:last-child{background:none;}
+/*add、edit、del*/
+.tools{clear:both; height:35px; margin-bottom:8px;}
+.toolbar{float:left;}
+.toolbar li,.toolbar1 li{background:url(../images/toolbg.gif) repeat-x; line-height:33px; height:33px; border:solid 1px #d3dbde; float:left;padding:0px 10px; margin-right:5px;border-radius: 3px; behavior:url(js/pie.htc); cursor:pointer;}
+.toolbar li span,.toolbar1 li span{float:left;padding-left:28px;margin-top:1px}
+.toolbar1{float:right;}
+.data{background:url(../images/t04.png) no-repeat 0px 4px;}
+.edit{background:url(../images/t02.png) no-repeat 0px 4px;}
+.add{background:url(../images/t01.png) no-repeat 0px 4px;}
+.del,.return{background:url(../images/t03.png) no-repeat 0px 4px;}
+.set{background:url(../images/t05.png) no-repeat 0px 4px;}
+.adopt{background:url(../images/t06.png) no-repeat 0px 4px;}
+.back{background:url(../images/t07.png) no-repeat 0px 4px;}
+/**datalist**/
+.tablelist{border:solid 1px #cbcbcb; width:100%; clear:both;}
+.tablelist th{background:url(../images/th.gif) repeat-x; height:34px; line-height:34px; border-bottom:solid 1px #b6cad2; text-indent:11px; text-align:left;}
+.tablelist td{line-height:35px; text-indent:11px; border-right: dotted 1px #c7c7c7;}
+.tablelink{color:#056dae;}
+.tablelist tbody tr.odd{background:#f5f8fa;}
+.tablelist tbody tr:hover{background:#e5ebee;}
+.sort{padding-left:3px;}
+
+/*page*/
+.pagin{position:fixed;bottom:0px;width:99%;height:40px;background:#efefef;border-top:1px solid #e2e0e0;border-left:1px solid #e2e0e0;border-right:1px solid #e2e0e0}
+.pagin .red{color:#f00;font-style:normal;font-weight:bold}
+.pagemessage{float:left;margin-left:22px;margin-top:5px;line-height:30px;}
+.pagelist{float:right;margin-right:22px;margin-top:5px;}
+.pagin .uew-select{float:left;top:6px;margin-left:10px;}
+.pagin .uew-select .uew-select-value{height:26px;line-height:26px;}
+.pagin .uew-select .uew-icon{top:6px;}
+.pagin .uew-select select{top:0px;_top:3px}
+
+/*seachform*/
+.seachform{ float:left;width:100%;clear:both;position:relative;z-index:100}
+.seachform li{float:left; margin-right:15px;height:42px}
+.seachform li label{padding-right:10px; float:left; line-height:32px;}
+.scinput{width:150px; height:32px; line-height:32px; border-top:solid 1px #a7b5bc; border-left:solid 1px #a7b5bc; border-right:solid 1px #ced9df; border-bottom:solid 1px #ced9df; background:url(../images/inputbg.gif) repeat-x; text-indent:10px;}
+.scbtn{width:85px;height:35px; background:#d24317; font-size:14px;font-weight:bold;color:#fff; cursor:pointer;border-radius:3px; behavior:url(../js/pie.htc);}
+
+/*form*/
+.formbody{padding:10px 18px;}
+.formtitle{border-bottom:solid 1px #d0dee5; line-height:35px; position:relative; height:35px; margin-bottom:28px;}
+.formtitle span{font-weight:bold;font-size:14px; border-bottom:solid 3px #66c9f3;float:left; position:absolute; z-index:100; bottom:-1px; padding:0 3px; height:30px; line-height:30px;}
+.forminfo{margin-left:23px;font-size:12px;}
+.forminfo td{padding:5px 0px;}
+.forminfo td label{line-height:34px; display:block; float:right;text-align: right;margin-right:15px}
+.forminfo td i{color:#7f7f7f; padding-left:20px; font-style:normal;}
+.forminfo td cite{display:block; padding-top:10px;}
+.dfinput{width:502px; height:32px; line-height:32px; border-top:solid 1px #a7b5bc; border-left:solid 1px #a7b5bc; border-right:solid 1px #ced9df; border-bottom:solid 1px #ced9df; background:url(../images/inputbg.gif) repeat-x; text-indent:10px;}
+.textinput{border-top:solid 1px #a7b5bc; border-left:solid 1px #a7b5bc; border-right:solid 1px #ced9df; border-bottom:solid 1px #ced9df; background:url(../images/inputbg.gif) repeat-x; padding:10px; width:482px; height:135px; line-height:20px; overflow:hidden;}
+.btn{width:137px;height:35px; border-radius:3px; background:#d24317; font-size:14px;font-weight:bold;color:#fff; cursor:pointer;}
+.btn1{width:137px;height:35px; border-radius:3px; background:#ccc; font-size:14px;font-weight:bold;color:#fff; cursor:pointer;}
+.formview{}
+.formview td{padding:5px 0px;}
+.formview td label{width:86px;line-height:28px; display:block; float:left;}
+.btnpanel{text-align:center;}
+
+/*tab*/
+.itab{height:36px; border-bottom:solid 1px #d0dee5; position:relative; border-left:solid 1px #d3dbde;}
+.itab ul li{float:left;height:37px; line-height:37px; background:url(../images/itabbg.png) repeat-x; border-right:solid 1px #d3dbde;}
+.itab ul li a{font-size:14px; color:#000; padding-left:25px; padding-right:25px;}
+.itab ul li a.selected{ height:37px; display:block; background:url(../images/itabbg1.png) repeat-x; font-weight:bold;}
+.tabson{margin:18px 0px;}
+
+.progress{}
+.progress ul li{float:left;width:100px;border-bottom:4px solid #eee;position:relative;}
+.progress span{background: url(../images/s_01.png) no-repeat;padding-top:30px;position:relative;top:34px;color:#bfbfbf;}
+.progress .last{border-bottom:4px solid #fff;}
+.progress .last span{right:0px;}
+.progress .lastactive{border:none}
+.progress ul li.active{border-bottom:4px solid #80c269;}
+.progress ul li.active span,.progress .lastactive span{background: url(../images/s_02.png) no-repeat;color:#80c269}
+/**
+ * file upload
+ */
+.faceupload {margin-left: 50px;margin-top: 5px;display: inline-block;}
+.site-upload{position:relative;width:110px;height:140px;border:1px solid #ccc;}
+.site-upload img{width:100%;height:100%}
+.enclosures{margin-bottom:40px}
+.enclosures li{float:left;margin-right:10px}
+/**
+ * new
+ */
+.newtype{position:absolute;padding:20px 20px 0px 0px;height:100%;border-right:1px solid #d7e4ea}
+.newtype ul li{padding:5px 30px;margin-top:10px;}
+.newtype ul li a{font-size:14px;font-family:"微软雅黑"}
+.newtype ul li:hover a,.newtype ul li.seleted a{color:#fff}
+.newtype ul li:hover,.newtype ul li.seleted{background:#e19476;border-radius:4px;}
+.newlist{min-height:350px;}
+.newlist ul li{position:relative;padding:10px 0px;border-bottom:1px dotted #E3E3E3;font-size:14px;}
+.newlist ul li.hover{background:#edf6fb}
+.newlist ul li a{position:relative;left:25px;}
+.newlist ul li span{position:absolute;right:25px;}
+.newcontent{min-width:1200px;margin:50px auto;}
+.newcontent .newtitle,.newcontent .subtitle,.newcontent .newinfo{text-align: center;}
+.newcontent .subtitle{padding:10px 0px;}
+.newcontent .newinfo{color:#888;margin-bottom:20px;}
+.newcontent .newtext{font-size:14px}
+.newcontent .newfj{color:#0066CC;font-size:14px;margin:20px 0px;}
+.newcontent .newfj a{color:#0066CC;}
+
+/**
+*login
+*/
+/*......................................登录页面.......................................*/
+.loginBgcolor{background:url(../images/loginbg.png) repeat}
+.loginBg{position:absolute;background:url(../images/loginmainbg02.jpg) no-repeat center center;width:100%;height:100%}
+/*  背景区  */
+#loginBg{top:50%; left:50%; margin:-301px 0px 0px -501px;width: 1002px; height: 602px;position:absolute;}
+
+/*  输入区域  */
+#Layer1{float:left;position:absolute; top:258px; left:490px;width:220px;height:68px; display:block;}
+	#Layer1 dt{ height: 42px;}	/*  输入条高度  */
+	#Layer1 input{ border: 1px solid transparent; _border-color: #e8e8e8; font-size:14px; color:#000000; height:23px; width:195px; padding: 3px 0px 0px 2px; background-color: transparent;}
+
+/*  按钮  */
+#Layer2{ float:left;position:absolute; top:340px; left:455px; width:238px; height:40px; background:url("../images/loginBt02.png") no-repeat top center;cursor:pointer; display:block;}
+

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+        "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<!-- 任务发布分析 -->
+	<package namespace="/analysis/taskInfo" name="taskInfo" extends="custom-struts-default">
+	    <!-- 统计分析-部门分析 -->
+		<action name="depart" method="depart" class="taskAnalysisAction">
+			<result name="success">/pages/analysis/department.jsp</result>
+		</action>
+		<!-- 统计分析-单位分析 -->
+		<action name="employ" method="employ" class="taskAnalysisAction">
+			<result name="success">/pages/analysis/employ.jsp</result>
+		</action>
+		<!-- 统计分析-任务预警分析 -->
+		<action name="warn" method="warn" class="taskAnalysisAction">
+			<result name="success">/pages/analysis/warning.jsp</result>
+		</action>
+	</package>
+</struts>

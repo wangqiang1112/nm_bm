@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+        "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="business" namespace="/business" extends="custom-struts-default">
+		<!-- 页面跳转 任务发布 新建任务 -->
+		<action name="taskAdd" method="add" class="taskAction">
+			<result name="success">/pages/business/taskrelease/add.jsp</result>
+		</action>
+		<action name="taskEdit" method="edit" class="taskAction">
+			<result name="success">/pages/business/taskrelease/add.jsp</result>
+		</action>
+		<action name="taskSave" method="save" class="taskAction">
+			<result name="success">/pages/business/taskrelease/list.jsp</result>
+		</action>
+		<action name="taskDel" method="delete" class="taskAction"></action>
+		<!-- 页面跳转 任务发布 任务查询 -->
+		<action name="taskList" method="list" class="taskAction">
+			<result name="success">/pages/business/taskrelease/list.jsp</result>
+		</action>
+		<!-- 任务详情 -->
+		<action name="taskDetail" method="taskDetail" class="taskAction">
+			<result name="success">/pages/business/taskrelease/view.jsp</result>
+		</action>
+		<!-- 验证 -->
+		<action name="judgeTaskNumber" method="judgeTaskNumber" class="taskAction"/>
+	</package>
+	
+	
+	<!-- 任务接收，预警  -->
+	<package name="task" namespace="/taskUnit" extends="custom-struts-default">
+		<!-- 任务处理，任务预警列表 -->
+		<action name="list" method="list" class="taskUnitAction" >
+			<!-- 任务处理 -->
+			<result name="dealt">/pages/business/taskdealt/list.jsp</result>
+			<!-- 任务预警 -->
+			<result name="warning">/pages/business/taskwarning/list.jsp</result>
+		</action>
+		<!-- 跳转 -->
+		<action name="jump" method="jump" class="taskUnitAction" >
+			<!-- 任务处理 -->
+			<result name="handle1">/pages/business/taskdealt/view.jsp</result>
+			<!-- 任务详情 -->
+			<result name="detail">/pages/business/taskdealt/detail.jsp</result>
+			<!-- 任务处理(预警) -->
+			<result name="handle2">/pages/business/taskwarning/view.jsp</result>
+		</action>
+		<!-- 处理 -->
+		<action name="update" method="update" class="taskUnitAction" />
+	</package>
+
+</struts>

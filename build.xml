@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+
+<project name="yw-nm" basedir="." default="all">
+
+	<property name="name" value="yw-nm" />
+
+	<property name="src.dir" value="src" />
+	<property name="build.dir" value=".classes" />
+	<property name="WebRoot.dir" value="WebRoot" />
+	<property name="lib.dir" value="${WebRoot.dir}/WEB-INF/lib" />
+	<property name="war.dir" value="war" />
+	<property name="dist.dir" value="dist" />
+
+	
+	<path id="classpath">
+		<fileset dir="${lib.dir}">
+		</fileset>
+
+		
+	</path>
+
+
+	<target name="clean" description="Clean output dirs">
+		<delete dir="${build.dir}" />
+		<delete dir="${war.dir}" />
+		<delete dir="${dist.dir}" />
+	</target>
+
+	<target name="build" description="Compile main source tree java files into class files and copy other files into war.dir">
+		<mkdir dir="${build.dir}" />
+
+		<javac destdir="${build.dir}" source="1.6" target="1.6" debug="true" deprecation="false" optimize="false" failonerror="true" includeantruntime="false">
+			<src path="${src.dir}" />
+			<compilerarg line="-encoding UTF-8" />
+			<!--
+			<compilerarg line="-Xlint:deprecation" />
+			<compilerarg line="-Xlint:unchecked" />
+			-->
+			<classpath refid="classpath" />
+		</javac>
+
+		<copy todir="${build.dir}" preservelastmodified="true">
+			<fileset dir="${src.dir}">
+				<include name="**/*.xml" />
+			</fileset>
+		</copy>
+
+		<copy todir="${war.dir}" preservelastmodified="true">
+			<fileset dir="${WebRoot.dir}">
+				<!--
+				<exclude name="webdbscript/**" />
+				-->
+			</fileset>
+		</copy>
+
+		<copy todir="${war.dir}/WEB-INF/classes" preservelastmodified="true">
+			<fileset dir="${build.dir}">
+			</fileset>
+		</copy>
+
+	</target>
+	
+	<target name="warfile" depends="build" description="Build the web application archive">
+		<mkdir dir="${dist.dir}" />
+		<war warfile="${dist.dir}/${name}.war" basedir="${war.dir}" webxml="${war.dir}/WEB-INF/web.xml">
+		</war>
+	</target>
+
+	<target name="all" depends="clean,build,warfile" description="Clean,build,warfile" />
+
+</project>

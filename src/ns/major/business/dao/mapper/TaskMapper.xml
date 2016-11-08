@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ns.major.business.dao.mapper.TaskMapper">
+	<select id="getTaskByDepAndNum" resultType="ns.major.business.dao.domain.Task">
+		select * from nm_tasks where departId=#{0} and taskNumber=#{1};
+	</select>
+	<select id="getTaskById" resultType="ns.major.business.dao.domain.Task">
+		select * from nm_tasks where taskId=#{0};
+	</select>
+
+	<insert id="save"  parameterType="ns.major.business.dao.domain.Task" >
+		insert into nm_tasks(
+			taskName,taskNumber,departId,departName,issuedTime,receiveUnit,
+			taskDescript,taskDetail,taskFileName,taskFilePath,
+			taskTerm,status,flags6,processTime
+		)values(
+			#{taskName},#{taskNumber},#{departId},#{departName},#{issuedTime},#{receiveUnit},
+			#{taskDescript},#{taskDetail},#{taskFileName},#{taskFilePath},
+			#{taskTerm},#{status},#{flags6},#{processTime}
+		)
+	</insert>
+	<select id="getAutoId" resultType="java.lang.Integer">
+	 	select DISTINCT(LAST_INSERT_ID())as taskId from nm_tasks;
+	</select>
+	<update id="updateStatus" >
+		update nm_tasks set status=#{1} where taskId=#{0}; 
+	</update>
+	<update id="edit" parameterType="ns.major.business.dao.domain.Task">
+		update nm_tasks set
+		taskName=#{taskName},taskNumber=#{taskNumber},departId=#{departId},
+		departName=#{departName},issuedTime=#{issuedTime},receiveUnit=#{receiveUnit},
+		taskDescript=#{taskDescript},taskDetail=#{taskDetail},
+		taskFileName=#{taskFileName},taskFilePath=#{taskFilePath},
+		taskTerm=#{taskTerm}
+		where taskId=#{taskId}
+	</update>
+	<!-- 条件搜索 -->
+	<select id="query" resultType="ns.major.business.dao.domain.Task" parameterType="ns.major.business.query.TaskQuery">
+		SELECT * from nm_tasks 
+			<where>
+				<if test=" null != departId and '' != departId " >
+					and departId = #{departId}
+				</if>
+				<if test="taskName !=null and taskName!=''" >
+					and taskName like concat('%',#{taskName},'%')
+				</if>
+				<if test="taskNumber !=null and taskNumber!=''" >
+					and taskNumber like concat('%',#{taskNumber},'%')
+				</if>
+				<if test="status !=null and status!=''" >
+					and status=#{status}
+				</if>
+			</where> 
+			order by flags6 desc;
+	</select>
+	<!-- 任务删除 -->
+	<delete id="delete" parameterType="java.util.List" >
+	 	  	delete from nm_tasks where taskId in 
+	    <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+	     	#{item}
+	    </foreach>
+	</delete>
+</mapper>

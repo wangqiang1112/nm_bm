@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ns.major.config.dao.mapper.UserLoginMapper">
+	<resultMap type="User" id="userLoginResult">
+		<result column="userId" property="userId" />
+		<result column="userName" property="userName" />
+		<result column="stafferName" property="stafferName" />
+		<result column="upassword" property="upassword" />
+		<result column="userType" property="userType" />
+		<result column="departId" property="departId" />
+		<result column="departName" property="departName" />
+		<result column="userPhone" property="userPhone" />
+		<result column="offerPhone" property="offerPhone" />
+		<result column="userFax" property="userFax" />
+		<result column="uRemarks" property="uRemarks" />
+		<result column="Email" property="Email" />
+	</resultMap>
+	<select id="findUserByUserName" resultMap="userLoginResult">
+	SELECT * from nm_users where UserName=#{username}
+	</select>
+	<select id="getPermissions" resultType="java.lang.String" parameterType="int">
+	  select Permissions from nm_roles where roleid=(select roleId from nm_users where userId=#{0})
+	</select>
+	<select id="getOnePermission" resultType="ns.major.config.dao.domain.Privilege" parameterType="int">
+	 select * from nm_privileges where PrivilegeId=#{0};
+	</select>
+</mapper>

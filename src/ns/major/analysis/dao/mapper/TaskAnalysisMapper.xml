@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ns.major.analysis.dao.mapper.TaskAnalysisMapper">
+	<select id="getAllDep" resultType="ns.major.config.dao.domain.Department">
+		select * from nm_department;
+	</select>
+	<select id="getAllUnit" resultType="ns.major.employ.dao.domain.Unit">
+		select * from nm_unit;
+	</select>
+	<!-- 根据部门获取下发或已关闭 -->
+	<select id="getDepart" resultType="java.lang.Integer" parameterType="ns.major.analysis.query.TaskAnalysisQuery">
+		select count(*) from nm_tasks where status>=#{status} and departId=#{departId}
+		<if test="startTime !=null " >
+					and issuedTime&gt;=#{startTime}
+		</if>
+		<if test="endTime !=null" >
+					and issuedTime&lt;#{endTime}
+		</if>
+	</select>
+	
+	<select id="getEmploy" resultType="java.lang.Integer" parameterType="ns.major.analysis.query.TaskAnalysisQuery">
+		select count(*) from nm_tasks where  receiveUnit=#{unitId}
+		<if test="type==1" >
+			and status>=1
+		</if>
+		<if test="type==2" >
+			and status in(1,2,3)
+		</if>
+		<if test="type==3" >
+			and status=4
+		</if>
+		<if test="type==4" >
+			and status=5
+		</if>
+		<if test="startTime !=null" >
+					and issuedTime&gt;=#{startTime}
+		</if>
+		<if test="endTime !=null" >
+					and issuedTime&lt;#{endTime}
+		</if>
+	</select>
+	
+	<select id="getWarn" resultType="java.lang.Integer" parameterType="ns.major.analysis.query.TaskAnalysisQuery">
+		select count(*) from nm_tasks a 
+		where a.ReceiveUnit =#{unitId} and a.Status &lt;&gt; 5 and a.Status &lt;&gt; 4
+		and (select datediff(now(),a.IssuedTime)) > a.TaskTerm
+			
+	</select>
+	
+</mapper>

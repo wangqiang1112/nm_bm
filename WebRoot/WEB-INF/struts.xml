@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+        "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<include file="struts-default.xml" />
+	<include file="struts-plugin.xml"/>
+    <constant name="struts.action.extension" value="do"/>
+    <include file="../page/secrecy/conf/struts-InfoPublish.xml" />
+    <include file="../page/employ/conf/struts-Unit.xml" />
+    <include file="../page/example/conf/struts-example.xml" />
+    <include file="../page/audit/conf/struts-audit.xml" />
+    <include file="../page/config/conf/struts-config.xml" />
+    <include file="../page/business/conf/struts-business.xml" />
+    <include file="../page/analysis/conf/struts-analysis.xml" />
+    <include file="../page/common/conf/struts-common.xml"/>
+    <constant name="struts.multipart.maxSize" value="20971520"/>
+	<package name="custom-struts-default" extends="struts-default">
+		<interceptors>
+			<interceptor name="exceptionInterceptor" class="ns.exception.ExceptionInterceptor"/>  
+			<interceptor-stack name="b2cplatPrivInterceptor">
+				<interceptor-ref name="exceptionInterceptor"/>  
+				<interceptor-ref name="defaultStack"/>
+			</interceptor-stack>
+		</interceptors>
+		<default-interceptor-ref name="b2cplatPrivInterceptor"/>
+		<global-results>
+			<result name="error">/404/404.jsp</result>
+		</global-results>
+	</package>
+    <package name="pub" extends="struts-default">
+    	
+		<action name="removeMessage" method="removeMessage" class="ns.common.BaseAction">
+		</action>
+		<action name="uploadFile" class="ns.common.UploadAction">
+		</action>
+		<action name="removeSelected" class="ns.common.BaseAction"></action>
+		<action name="toMessage" class="ns.common.BaseAction">
+			<result name="success">/commons/tomessage.jsp</result>  
+		</action>
+	</package>
+ <!-- 
+ <intercrptor name="moreAuthority" class="org.linyu.action.interceptor.MoreAuthorityInterceptor">
+ 	<param name="sysUserService" ></param>
+ </intercrptor> -->
+ 
+ </struts>

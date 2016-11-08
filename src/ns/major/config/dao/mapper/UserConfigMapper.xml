@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ns.major.config.dao.mapper.UserConfigMapper">
+	<resultMap type="User" id="userConfigResult">
+		<result column="userId" property="userId" />
+		<result column="userName" property="userName" />
+		<result column="stafferName" property="stafferName" />
+		<result column="upassword" property="upassword" />
+		<result column="userType" property="userType" />
+		<result column="departId" property="departId" />
+		<result column="departName" property="departName" />
+		<result column="userPhone" property="userPhone" />
+		<result column="offerPhone" property="offerPhone" />
+		<result column="userFax" property="userFax" />
+		<result column="uRemarks" property="uRemarks" />
+		<result column="Email" property="Email" />
+		<result column="IsEnable" property="IsEnable"/>
+		<result column="roleId" property="roleId" />
+	</resultMap>
+	<!-- 获得密码长度 -->
+	<select id="getPwLenth" resultType="int" >
+		select ConfigValue from nm_sysconfig where ConfigId=2;
+	</select>
+	<select id="query" resultType="User" parameterType="ns.major.config.query.UserCofQuery">
+		SELECT * from nm_users 
+			<where>
+				<if test="userName !=null and userName!=''" >
+					and userName like concat('%',#{userName},'%')
+				</if>
+			</where> 
+			order by userId desc
+	</select>
+	
+	<delete id="delete" parameterType="java.util.List" >
+	 	  	delete from nm_users where userId in 
+	    <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+	     	#{item}
+	    </foreach>
+	</delete>
+	
+    <insert id="add" parameterType="ns.major.config.dao.domain.User" >
+		insert into nm_users(userName,stafferName,upassword,userType,departId,departName,userPhone,
+		offerPhone,userFax,uRemarks,Email,unitName,unitId,IsEnable,RoleId) values(#{userName},#{stafferName},
+		#{upassword},#{userType},#{departId},#{departName},#{userPhone},#{offerPhone},#{userFax},#{uRemarks},
+		#{Email},#{unitName},#{unitId},0,#{roleId})
+	</insert>
+	
+	<update id="update" parameterType="ns.major.config.dao.domain.User">
+		 update nm_users set userName=#{userName},stafferName=#{stafferName},upassword=#{upassword},userType=#{userType},
+		 departId=#{departId},departName=#{departName},userPhone=#{userPhone},offerPhone=#{offerPhone},userFax=#{userFax},
+		 uRemarks=#{uRemarks},Email=#{email},unitName=#{unitName},unitId=#{unitId} where userId=#{userId}
+	</update>
+	
+	 <update id="lock" parameterType="ns.major.config.dao.domain.User">
+		 update nm_users set IsEnable=#{isEnable} where userId=#{userId}
+	 </update>
+	 
+	<select id="getUesrConfList_Count" resultMap="account">
+		SELECT count(UserId) count from nm_users
+	</select>
+	<resultMap id="account" type="Integer">
+	    <result column="count" jdbcType="INTEGER" javaType="Integer" />
+	</resultMap>
+	
+	<select id="getDeptName" resultType="java.lang.String">
+		select  DepartName  from nm_department;
+	</select>
+	
+	<select id="getUnitName" resultType="java.lang.String">
+		select  UnitName  from nm_unit;
+	</select>
+	
+	<select id="getUnitId" resultType="int" parameterType="java.lang.String">
+		select  UnitId  from nm_unit where UnitName=#{0};
+	</select>
+	
+	<select id="getDeptId" resultType="int" parameterType="java.lang.String">
+		select  DepartId  from nm_department where DepartName=#{0};
+	</select>
+	
+	<select id="getUserById" parameterType="int" resultType="ns.major.config.dao.domain.User">
+		select * from nm_users where userId=#{userId}
+	</select>
+	
+	<select id="getAllRole"  resultType="ns.major.config.dao.domain.Role">
+		select *  from nm_roles;
+	</select>
+	
+	<update id="updateRole" parameterType="ns.major.config.dao.domain.User" >
+		update nm_users set roleId=#{roleId} where userId=#{userId}
+	</update>
+	<!-- 得到用户部门下所有员工名字 -->
+	<select id="getStafferNames" parameterType="int" resultType="java.lang.String">
+	  select DISTINCT(s.StafferName) from nm_staffbaseinfo s left join nm_users u on s.SDepart=u.DepartId where u.departId=#{0}
+	
+	</select>
+	<!-- 角色配置 -->
+	 <select id="roleList" parameterType="ns.major.config.query.RoleQuery" resultType="ns.major.config.dao.domain.Role">
+		 select * from nm_roles order by roleId desc
+	 </select>
+	 
+	<delete id="roleDelete" parameterType="java.util.List" >
+			delete from nm_roles where roleId in 
+	    <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+	     	#{item}
+	    </foreach>
+	</delete>
+	
+	<insert id="roleAdd" parameterType="ns.major.config.dao.domain.Role">
+		insert into nm_roles(RoleName,RoleDescrip,Permissions) values(#{RoleName},#{RoleDescrip},#{Permissions})
+	</insert>
+	
+	<update id="roleUpdate" parameterType="ns.major.config.dao.domain.Role">
+		update nm_roles set RoleName=#{RoleName},RoleDescrip=#{RoleDescrip} where roleId=#{roleId}
+	</update>
+	
+	<select id="getRoleById" parameterType="int" resultType="ns.major.config.dao.domain.Role">
+		select * from nm_roles where roleId=#{0}
+	</select>
+	
+	<select id="getAllPrivilege" resultType="ns.major.config.dao.domain.Privilege">
+		select * from nm_privileges
+	</select>
+	
+	<!-- 验证是否存在角色用户，存在不允许删除 -->
+	<select id="checkUser" parameterType="int" resultType="ns.major.config.dao.domain.User">
+   	 select * from nm_users where roleId=#{0}	
+	</select>
+	<!-- 验证单位下是否已经存在用户 -->
+	<select id="unitNameCheck" parameterType="java.lang.String" resultMap="account">
+   	 select count(*) count from nm_users where unitName=#{0}	
+	</select>
+	<!-- 参数配置 -->
+	<select id="getparamSetValue" parameterType="int" resultType="int">
+		select ConfigValue from nm_sysconfig where  ConfigId=#{0};   
+	</select>
+	
+	<update id="updateParaSet" parameterType="int" >
+		update nm_sysconfig set ConfigValue=#{0} where ConfigId=#{1} 
+	</update>
+	
+	<update id="updatePerm" parameterType="ns.major.config.dao.domain.Role">
+		update nm_roles set Permissions=#{Permissions} where RoleId=#{roleId}
+	</update>
+	<select id="userNameCheck" parameterType="java.lang.String" resultMap="account">
+		select count(*) count from nm_users where userName=#{0}
+	</select>
+	
+	<select id="getUser" parameterType="int" resultType="ns.major.config.dao.domain.User">
+		select * from nm_users a where a.UnitId = #{unitId}
+	</select>
+	
+	<select id="getRoles" resultType="ns.major.config.dao.domain.Role">
+		select a.* from nm_roles a , nm_sysconfig b
+		where a.roleId =  b.Flags1
+	</select>
+	
+	<delete id="clearLog" parameterType="int">
+		delete from nm_loginexception where userid=#{0}
+	</delete>
+	<!-- 判断是否存在相同的角色名 -->
+	<select id="roleNameCheck" parameterType="java.lang.String" resultMap="account">
+		select count(*) count from nm_roles where roleName=#{0}
+	</select>
+</mapper>

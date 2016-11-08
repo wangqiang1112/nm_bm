@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+http://www.springframework.org/schema/context
+http://www.springframework.org/schema/context/spring-context-4.2.xsd
+http://www.springframework.org/schema/tx
+http://www.springframework.org/schema/tx/spring-tx-4.2.xsd">
+	<!-- <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean"> 
+		<property name="dataSource" ref="dataSource" /> <property name="configLocation" 
+		value="classpath:ns/example/dao/mapper/classMapper.xml" /> </bean> -->
+	<!-- 用户登录 -->
+	<bean id="userLoginAction" class="ns.major.config.action.UserLoginAction"
+		scope="prototype">
+		<property name="loginServ" ref="userLoginService" />
+		<property name="loginService" ref="loginService"/>
+	</bean>
+	<bean id="loginService" class="ns.major.audit.service.impl.LoginAuditServiceImpl"></bean>
+	<bean id="userLoginService" class="ns.major.config.service.impl.UserLoginServiceImpl"></bean>
+	<!-- dao层 -->
+	<bean id="familyInfoMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="ns.major.config.dao.mapper.FamilyInfoMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+	<bean id="staffEduMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="ns.major.config.dao.mapper.StaffEduMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+	<bean id="staffJobMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="ns.major.config.dao.mapper.StaffJobMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+	<bean id="baseDataMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="ns.major.common.dao.mapper.BaseDataMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+	<!--权限管理-->
+	<bean id="UserConfigAction" class="ns.major.config.action.UserConfigAction"
+		scope="prototype">
+		<property name="userConfServ" ref="userConfServ"/>
+	</bean>
+	<bean id="userConfServ" class="ns.major.config.service.impl.UserConfigServiceImpl"></bean>
+	<!-- 部门管理 -->
+	<bean id="deptConfigAction" class="ns.major.config.action.DeptConfigAction" scope="prototype">
+	<property name="deptConfServ" ref="deptConfServ"/>
+	<property name="staffConfServ" ref="staffConfServ"/>
+	</bean>
+	<bean id="deptConfServ" class="ns.major.config.service.impl.DeptConfigServiceImpl"></bean>
+	<!-- 人员管理 -->
+	<bean id="staffConfigAction" class="ns.major.config.action.StaffConfigAction" scope="prototype">
+	<property name="staffConfServ" ref="staffConfServ"/>
+	<property name="baseDataServ" ref="baseDataServ"/>
+	</bean>
+	<bean id="baseDataServ" class="ns.major.common.service.impl.BaseDataServiceImpl"></bean>
+	<bean id="staffConfServ" class="ns.major.config.service.impl.StaffConfigServiceImpl"></bean>
+</beans>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ns.major.audit.dao.mapper.SysUseAuditMapper">
+	<!-- 获取系统日志列表（分页） -->
+	<select id="query" parameterType="ns.major.audit.query.SysUseAuditQuery"  resultType="ns.major.audit.dao.domain.SysUseAudit">
+		select * from nm_sysuseaudit
+		<where>
+			<if test="userName !=null and userName !=''">
+				and userName like concat('%',#{userName},'%')
+			</if>
+			<if test="umodule !=null and umodule !=''">
+				and umodule=#{umodule}
+			</if> 
+			<if test="startDate !=null and startDate!=''">
+				and AuditTime &gt; #{startDate} 
+			</if>
+			<if test="endDate !=null and endDate!=''">
+				and AuditTime &lt; concat(#{endDate},' 23:59:59') 
+			</if>
+		</where>
+		order by SysUseAuditId desc
+	</select>
+	<delete id="delete" parameterType="java.util.List" >
+		delete from nm_sysuseaudit where SysUseAuditID in 
+	    <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+	    	#{item}
+	    </foreach>
+    </delete>
+    <insert id="addSysUse" parameterType="ns.major.audit.dao.domain.SysUseAudit">
+		insert into nm_sysuseaudit(UserId,UserName,AuditIP,AuditTime,Umodule,Operation) values
+		(#{userId},#{userName},#{auditIp},Now(),#{umodule},#{operation})
+	</insert>
+	<select id="getMethod" resultType="ns.major.audit.dao.domain.SysMethod" >
+		select * from nm_sysMethod a where a.Url = #{url};
+	</select>
+	<select id="getInitUmodule" resultType="java.lang.String">
+	select umodule from nm_sysuseaudit GROUP BY umodule;
+	</select>
+</mapper>

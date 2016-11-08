@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ns.major.employ.dao.mapper.UnitMapper">
+
+	<resultMap id="account" type="Integer">
+	    <result column="count" jdbcType="INTEGER" javaType="Integer" />
+	</resultMap>
+	
+	<!-- 获取市 -->
+	<select id="getCity" resultType="java.util.Map">
+		select Pid,FirstName as City from nm_dictionary where SecondName = "10150000" 
+	</select>
+	<!-- 获取区县 -->
+	<select id="getCountry" resultType="java.util.Map" >
+		select Pid,FirstName as Country from nm_dictionary where SecondName = #{Pid}
+	</select>
+	<!-- 单位名字判重 -->
+	<select id="queryName" parameterType="java.lang.String" resultMap="account">
+		select count(*) count from nm_Unit where unitName = #{unitName}
+	</select>
+	<!-- 获取公司性质 -->
+	<select id="getProperty" resultType="java.util.Map" >
+		select Pid,FirstName as Property from nm_dictionary where Pid like "40%"
+	</select>
+	<!-- 添加数据(Unit) -->
+	<insert id="addUnit" parameterType="ns.major.employ.dao.domain.Unit">
+		insert into nm_Unit(UnitName,UnitProperty,UnitCity,UnitCountry,UnitAddress,UnitTelePhone,CredentialsNum,Principal,PricipalPhone,CheckStatus,UUID,UpdateTime,unitContact
+		<if test=" null != filePath and '' != filePath">
+			,FilePath
+		</if>
+		) values(#{unitName},#{unitProperty},#{unitCity},#{unitCountry},#{unitAddress},#{unitTelePhone},#{credentialsNum},#{principal},#{pricipalPhone},1,#{uuid},now(),#{unitContact}
+		<if test=" null != filePath and '' != filePath">
+			,#{filePath}
+		</if>
+		)
+	</insert>
+	<!-- UUid -->
+	<select id="getUnit_uuid" resultType="ns.major.employ.dao.domain.Unit">
+		select * from nm_unit where UUID = #{uuid}
+	</select>
+	<!-- 添加数据(UnitPhoto) -->
+	<insert id="addUnitPhoto" parameterType="ns.major.employ.dao.domain.Unit">
+		insert into nm_UnitPhoto(UnitId,UnitName,UnitProperty,UnitCity,UnitCountry,UnitAddress,UnitTelePhone,CredentialsNum,Principal,PricipalPhone,CheckStatus,updateTime,unitContact
+		<if test=" null != filePath and '' != filePath">
+			,FilePath
+		</if>
+		) values(#{unitId},#{unitName},#{unitProperty},#{unitCity},#{unitCountry},#{unitAddress},#{unitTelePhone},#{credentialsNum},#{principal},#{pricipalPhone},1,now(),#{unitContact}
+		<if test=" null != filePath and '' != filePath">
+			,#{filePath}
+		</if>
+		)
+	</insert>
+	<!-- 获取列表 -->
+	<select id="getUnitList" parameterType="ns.major.employ.query.UnitQuery" resultType="ns.major.employ.dao.domain.Unit" >
+			<if test=" 1 == level" >
+				select a.*,b.FirstName as cityName,c.FirstName as property from nm_unitPhoto a, nm_dictionary b,nm_dictionary c 
+				where a.unitId = #{unitId} and a.UnitCity = b.Pid and a.UnitProperty = c.Pid order by a.UpdateTime desc
+			</if>
+			<if test=" 1 != level ">
+				select a.*,b.FirstName as cityName,c.FirstName as property from nm_unit a, nm_dictionary b,nm_dictionary c 
+				<where>
+					a.UnitCity = b.Pid and a.UnitProperty = c.Pid 
+					<if test=" null != unitId and 0 != unitId" >
+						and a.Unitid= #{unitId}	
+					</if>
+					<if test=" null != unitCity and '' != unitCity" >
+						and a.UnitCity = #{unitCity}	
+					</if>
+					<if test=" null != unitProperty and '' != unitProperty" >
+						and a.UnitProperty = #{unitProperty}
+					</if>
+					<if test=" null != unitName and '' != unitName" >
+						and a.UnitName like concat('%',#{unitName},'%')
+					</if>
+					<if test=" null != checkStatus and '' != checkStatus" >
+						and a.CheckStatus = #{checkStatus}
+					</if>
+					<if test=" 1 == clas" >
+						and a.CheckStatus = 1
+					</if>
+					order by a.UpdateTime desc
+				</where>
+			</if>
+	</select>
+	<!-- 单位详情 -->
+	<select id="getOne" parameterType="ns.major.employ.dao.domain.Unit" resultType="ns.major.employ.dao.domain.Unit" >
+		select a.*,b.FirstName as cityName,c.FirstName as property , d.FirstName as country
+		<if test=" null != unitId and 0 != unitId">
+			from nm_unit a, nm_dictionary b,nm_dictionary c,nm_dictionary d 
+			where a.UnitCity = b.Pid and a.UnitProperty = c.Pid and a.UnitCountry = d.Pid and a.UnitId = #{unitId}
+		</if>
+		<if test=" null != id and 0 != id">
+			from nm_unitPhoto a, nm_dictionary b,nm_dictionary c,nm_dictionary d 
+			where a.UnitCity = b.Pid and a.UnitProperty = c.Pid and a.UnitCountry = d.Pid and a.Id = #{id}
+		</if>
+	</select>
+	<!-- 编辑 -->
+	<update id="update" parameterType="ns.major.config.dao.domain.User" >
+		update nm_unit a 
+		set a.UnitName = #{unitName},a.UnitProperty = #{unitProperty},a.UnitCity = #{unitCity},a.UnitCountry = #{unitCountry},
+		a.UnitAddress = #{unitAddress},a.UnitTelePhone = #{unitTelePhone},a.CredentialsNum = #{credentialsNum},a.UpdateTime = now(),
+		a.Principal = #{principal},a.PricipalPhone = #{pricipalPhone},a.CheckStatus = #{checkStatus},a.FilePath = #{filePath},a.unitContact = #{unitContact}
+		where a.Unitid = #{unitId}
+	</update>
+	<!-- 更改状态(Unit) -->
+	<update id="updateUnit" parameterType="ns.major.employ.query.UnitQuery" >
+		update nm_unit a set a.checkStatus = #{checkStatus} where a.unitId in
+		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+	    	#{item}
+    	</foreach>
+	</update>
+	<!-- 更改状态(UnitPhoto) -->
+	<update id="updateUnitPhoto" parameterType="ns.major.employ.query.UnitQuery" >
+		update nm_unitPhoto a set a.checkStatus = #{checkStatus} where a.checkStatus = 1 and a.unitId in
+		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+	    	#{item}
+    	</foreach>
+	</update>
+	<!-- 获取变更列表 -->
+	<select id="getUnitPhoto" resultType="ns.major.employ.dao.domain.Unit" >
+		select a.unitId,a.unitName,a.updateTime,a.id from nm_unitPhoto a order by a.updateTime desc
+	</select>
+	<!-- 变更对比 -->
+	<select id="getContrast" parameterType="ns.major.employ.query.UnitQuery" resultType="ns.major.employ.dao.domain.Unit" >
+		<if test=" null != id and 0 != id" >
+			select a.*,b.FirstName as cityName,c.FirstName as property from nm_unitphoto a ,nm_dictionary b ,nm_dictionary c  
+			where a.Unitid = #{unitId} and a.unitcountry =  b.pid and a.UnitProperty = c.Pid 
+			and a.updateTime &lt;= (select b.updateTime from nm_unitphoto b where id = #{id}) order by a.updateTime desc limit 2
+		</if>
+		<if test=" 0 == id " >
+			select a.*,b.FirstName as cityName,c.FirstName as property from nm_unitphoto a ,nm_dictionary b ,nm_dictionary c  
+			where a.Unitid = #{unitId} and a.unitcountry =  b.pid and a.UnitProperty = c.Pid order by a.updateTime desc limit 2
+		</if>
+	</select>
+	<!-- 附件名判重 -->
+	<select id="getAllFilePath" parameterType="ns.major.employ.dao.domain.Unit" resultType="String">
+		select a.filePath from nm_unit a
+		<where>
+			a.filePath &lt;&gt; ''
+			<if test=" null != unitId and 0 != unitId" >
+				and a.unitId = #{unitId}
+			</if>
+		</where>
+	</select>	
+	<!-- 组织机构代码判重 -->
+	<select id="credCheck" parameterType="java.lang.String" resultMap="account">
+		select count(*) count from nm_unit where CredentialsNum = #{0}
+	</select>
+	
+</mapper>

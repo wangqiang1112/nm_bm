@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ns.major.config.dao.mapper.StaffEduMapper">
+	<insert id="add"  parameterType="ns.major.config.dao.domain.StaffEdu">
+		insert into nm_staffedu
+		(stafferId,stafferName,EStartTime,EEndTime,institutionName,
+			discipline,ESystem,degree,ewitness,ERemarks)
+		values(#{stafferId},#{stafferName},#{EStartTime},#{EEndTime},#{institutionName},
+			#{discipline},#{ESystem},#{degree},#{ewitness},#{ERemarks});
+	</insert>
+	<update id="update"  parameterType="ns.major.config.dao.domain.StaffEdu">
+		update nm_staffedu set
+		stafferId=#{stafferId},stafferName=#{stafferName},EStartTime=#{EStartTime},
+		EEndTime=#{EEndTime},institutionName=#{institutionName},
+		discipline=#{discipline},ESystem=#{ESystem},degree=#{degree},ewitness=#{ewitness},
+		ERemarks=#{ERemarks} where eduID=#{eduID};
+	</update>
+	<delete	 id="del" parameterType="int">
+		delete from nm_staffedu where eduID=#{0};
+	</delete>
+	<select id="getStaffIdByEduID" parameterType="int" resultType="int">
+		select stafferId from nm_staffedu where eduID=#{0};
+	</select>
+	
+	
+	<select id="getList" parameterType="int" resultType="ns.major.config.dao.domain.StaffEdu">
+		select * from nm_staffedu where stafferId=#{0};
+	</select>
+	<select id="getStaffEduByID" parameterType="int" resultType="ns.major.config.dao.domain.StaffEdu">
+		select * from nm_staffedu where eduID=#{0};
+	</select>
+</mapper>

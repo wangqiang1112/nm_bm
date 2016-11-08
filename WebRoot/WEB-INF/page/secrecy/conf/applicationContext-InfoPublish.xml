@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+http://www.springframework.org/schema/context
+http://www.springframework.org/schema/context/spring-context-4.2.xsd
+http://www.springframework.org/schema/tx
+http://www.springframework.org/schema/tx/spring-tx-4.2.xsd">
+
+    <bean id="infoPublishMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">  
+        <property name="mapperInterface" value="ns.major.secrecy.dao.mapper.InfoPublishMapper"/>  
+        <property name="sqlSessionFactory" ref="sqlSessionFactory" />  
+    </bean> 
+    
+	
+	 <bean id="infoPublishService" class="ns.major.secrecy.service.impl.InfoPublishServiceImpl">
+	 </bean>
+    
+    <bean id="infoPublishAction" class="ns.major.secrecy.action.InfoPublishAction" scope="prototype">
+		<property name="infoPublishService" ref="infoPublishService"/>
+	</bean>
+	
+</beans>

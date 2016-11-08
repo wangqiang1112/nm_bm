@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ns.major.audit.dao.mapper.LoginAuditMapper">
+	<!-- 获取登录日志列表 -->
+	<select id="query" parameterType="ns.major.audit.query.LoginAuditQuery" resultType="ns.major.audit.dao.domain.LoginAudit" >
+		select * from nm_userLoginAudit 
+		<where>
+			<if test="userName!='' and userName!=null">
+				and userName like concat('%',#{userName},'%')
+			</if>
+			<if test="startDate !=null and startDate!=''">
+				and loginTime &gt; #{startDate} 
+			</if>
+			<if test="endDate !=null and endDate!=''">
+				and loginTime &lt; concat(#{endDate},' 23:59:59') 
+			</if>
+		</where>
+		order by LoginAuditId desc,loginTime desc
+	</select>
+	<!-- 删除一条或多条数据 -->
+	<delete id="deleteLogin" parameterType="java.util.List" >
+		delete from nm_userLoginAudit where LoginAuditID in 
+	    <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+	    	#{item}
+	    </foreach>
+	</delete>
+	<insert id="addLogTime" parameterType="ns.major.audit.dao.domain.LoginAudit" >
+		insert into nm_userLoginAudit(UserId,UserName,LoginIP,LoginTime,UUId) 
+		values(#{userId},#{userName},#{loginIp},now(),#{uuid})
+	</insert>
+	
+	<update id="addLogOutTime" parameterType="ns.major.audit.dao.domain.LoginAudit">
+		update nm_userLoginAudit set LogOutTime = now() where UserId = #{userId} and UUID = #{uuid}
+	</update>
+</mapper>

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ns.major.secrecy.dao.mapper.InfoPublishMapper">
+	<!-- 列表(更多) -->
+	<select id="mainA" parameterType="ns.major.secrecy.query.InfoPublishQuery" resultType="ns.major.secrecy.dao.domain.InfoPublish" >
+		select a.articleId,a.topic,a.publishTime,a.contentLevel from nm_infoPublish a 
+		<where>
+			<if test=" null != pid and '' != pid">
+				a.TopicType = #{pid} 
+			</if>
+		</where>
+		order by a.ArticleId desc ;
+	</select>
+	<!-- 首页 -->
+	<select id="main" resultType="ns.major.secrecy.dao.domain.InfoPublish" >
+		<foreach item="item" index="index" collection="list"   >
+			(select articleId,topic,topicType,publisher,publishTime,contentlevel from nm_infopublish where topicType = #{item} order by articleId desc limit 5 )  
+			<if test="list.size()-1 != index" >
+				union 
+			</if>
+		</foreach>
+	</select>
+	<!-- 信息发布列表 -->
+	<select id="list" parameterType="ns.major.secrecy.query.InfoPublishQuery" resultType="ns.major.secrecy.dao.domain.InfoPublish" >
+		select a.articleId,a.topic,a.publisher,a.topicType,a.departName,a.articleLevel,b.FirstName as typeName from nm_infoPublish a , nm_dictionary b
+		<where>
+			 b.pid like "80%" and a.TopicType = b.Pid 
+			<if test=" null != pid and 0 != pid">
+				and a.TopicType = #{pid}
+			</if>
+			<if test=" null != departId and 0 != departId">
+				and a.DepartId = #{departId}
+			</if>
+			<if test=" null != publisher and '' != publisher">
+				and a.Publisher like concat('%',#{publisher},'%')
+			</if>
+			<if test=" null != topic and '' != topic">
+				and a.Topic like concat('%',#{topic},'%')
+			</if>
+			<if test=" null != startDate and '' != startDate" >
+				and a.PublishTime &gt;= #{startDate}
+			</if>
+			<if test=" null != endDate and '' != endDate" >
+				and a.PublishTime &lt;= #{endDate}
+			</if>
+		</where>
+		order by a.ArticleId desc
+	</select>
+	<!-- 获取主题类别 -->
+	<select id="getTopicType" resultType="java.util.Map">
+		select pid,FirstName as topicType from nm_dictionary where Pid like "80%"
+	</select>
+	<!-- 获取主题列表 -->
+	<select id="getTopicTypeName" resultType="java.util.Map">
+		select FirstName as typeName from nm_dictionary where Pid = #{pid}
+	</select>
+	<!-- 部门列表 -->
+	<select id="getDeptList" resultType="java.util.Map" >
+		select departId,departName from nm_department 
+	</select>
+	<!-- 获取 -->
+	<select id="getDeptOne" resultType="java.util.Map" >
+		select departId,departName from nm_department where DepartID = #{departId}
+	</select>
+	<!-- 详情 -->
+	<select id="query" resultType="ns.major.secrecy.dao.domain.InfoPublish">
+		select a.*,b.FirstName as typeName from nm_infoPublish a,nm_dictionary b where a.articleId = #{articleId} and a.topicType = b.pid
+	</select>
+	<!-- 发布 -->
+	<insert id="save" parameterType="ns.major.secrecy.dao.domain.InfoPublish" >
+		insert into nm_infoPublish (TopicType,DepartId,DepartName,Publisher,PublishTime,ArticleLevel,Topic,ContentLevel
+		<if test=" null != articleFilePath and '' != articleFilePath" >
+			,ArticleFilePath
+		</if>
+		) values(#{pid},#{departId},#{departName},#{publisher},now(),#{articleLevel},#{topic},#{contentLevel}
+		<if test=" null != articleFilePath and '' != articleFilePath" >
+			,#{articleFilePath}
+		</if>
+		);
+	</insert>
+	
+	<delete id="delete">
+		delete from nm_infoPublish where ArticleId = #{ArticleId};
+	</delete>
+	
+	
+	
+</mapper>

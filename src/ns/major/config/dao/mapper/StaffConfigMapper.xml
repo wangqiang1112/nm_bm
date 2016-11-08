@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ns.major.config.dao.mapper.StaffConfigMapper">
+	<select id="query" parameterType="ns.major.config.query.StaffQuery" resultType="ns.major.config.dao.domain.Staff">
+	select s.*,d.DepartName SDepart_str,dc.FirstName SPost_str from nm_staffbaseinfo s left join nm_department d on 
+	s.SDepart=d.DepartID left join nm_dictionary dc on s.SPost=dc.DictId
+	<where>
+	<if test="stafferName !=null and stafferName !=''" >
+	and s.StafferName like concat('%',#{stafferName},'%') 
+	</if>
+	<if test="SPost !=null and SPost !=''" >
+	and dc.FirstName like concat('%',#{SPost},'%') 
+	</if>
+	<if test="SDepart !=null and SDepart !=''" >
+	and d.DepartName like concat('%',#{SDepart},'%')  or s.SDepart=#{SDepart}
+	</if>
+	</where> 
+	</select>
+	
+	<delete id="delete" parameterType="java.util.List" >
+		delete from nm_staffbaseinfo where StafferId in 
+   	 	<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+    	 	#{item}
+    	</foreach>
+	</delete>
+	<select id="getStaffByDeptName" parameterType="java.lang.String" resultType="ns.major.config.dao.domain.Staff">
+		select s.* from nm_staffbaseinfo s left join nm_department d on s.SDepart=d.departId where d.departName=#{0}
+	</select>
+	<insert id="importBaseAdd" parameterType="ns.major.config.dao.domain.Staff">
+		insert into nm_staffbaseinfo
+		(
+			stafferName,stafferSex,birthDay,nationality,politicalStatus,nation,IDNumber,
+			associations,mobilePone,phone,isMarry,censusAddress,liveAddress,archivesAdd,
+			crimeRecord,overSeasMarry,SUnit,SDepart,SPost,SJob,SEmail,SUnitPhone,SecrecyYears,
+			Passport,GreenCard,SFilePath,Level
+		)values(
+			#{stafferName},#{stafferSex},#{birthDay},#{nationality},#{politicalStatus},#{nation},#{IDNumber},
+			#{associations},#{mobilePone},#{phone},#{isMarry},#{censusAddress},#{liveAddress},#{archivesAdd},
+			#{crimeRecord},#{overSeasMarry},#{SUnit},#{SDepart},#{SPost},#{SJob},#{SEmail},#{SUnitPhone},
+			#{secrecyYears},#{passport},#{greenCard},#{SFilePath},#{level}
+		)
+	</insert>
+	<select id="getCount_IDNumber" parameterType="java.lang.String" resultType="int">
+		select count(StafferId) from nm_staffbaseinfo where IDNumber=#{IDNumber};
+	</select>
+	<!-- 获取staff -->
+	<select id="getStaffByIDNumber" resultType="ns.major.config.dao.domain.Staff" parameterType="java.lang.String">
+		select * from nm_staffbaseinfo where IDNumber=#{IDNumber} limit 1;
+	</select>
+	<select id="getStaffByStafferId" resultType="ns.major.config.dao.domain.Staff" parameterType="int">
+		select * from nm_staffbaseinfo where stafferId=#{0};
+	</select>
+	<insert id="baseAdd" parameterType="ns.major.config.dao.domain.Staff">
+		insert into nm_staffbaseinfo
+		(
+			stafferName,stafferSex,birthDay,nationality,politicalStatus,nation,IDNumber,
+			associations,mobilePone,phone,isMarry,censusAddress,liveAddress,archivesAdd,
+			crimeRecord,overSeasMarry,IDCardFile
+		)values(
+			#{stafferName},#{stafferSex},#{birthDay},#{nationality},#{politicalStatus},#{nation},#{IDNumber},
+			#{associations},#{mobilePone},#{phone},#{isMarry},#{censusAddress},#{liveAddress},#{archivesAdd},
+			#{crimeRecord},#{overSeasMarry},#{IDCardFile}
+		)
+	</insert>
+	<update id="baseUpdate" parameterType="ns.major.config.dao.domain.Staff">
+		update nm_staffbaseinfo
+		set stafferName=#{stafferName},stafferSex=#{stafferSex},birthDay=#{birthDay},
+			nationality=#{nationality},politicalStatus=#{politicalStatus},nation=#{nation},
+			associations=#{associations},mobilePone=#{mobilePone},phone=#{phone},isMarry=#{isMarry},
+			censusAddress=#{censusAddress},liveAddress=#{liveAddress},archivesAdd=#{archivesAdd},
+			IDCardFile=#{IDCardFile}
+		<if test="crimeRecord !=null and crimeRecord!=''" >
+			, crimeRecord=#{crimeRecord}
+		</if>
+		<if test="overSeasMarry !=null and overSeasMarry!=''" >
+			, overSeasMarry=#{overSeasMarry}
+		</if>
+		where stafferId=#{stafferId}
+	</update>
+	<!-- 人员新增 单位信息 -->
+	<update id="unitInfoUpdate" parameterType="ns.major.config.dao.domain.Staff">
+		update nm_staffbaseinfo
+		set flags3=#{flags3},SDepart=#{SDepart},SPost=#{SPost},
+		SJob=#{SJob},secrecyYears=#{secrecyYears}
+		<if test="SEmail!=null and SEmail!=''" >
+			, SEmail=#{SEmail}
+		</if>
+		where stafferId=#{stafferId}
+	</update>
+	<!-- 人员信息 选择密级-->
+	<update id="declassifiedUpdate" parameterType="ns.major.config.dao.domain.Staff">
+		update nm_staffbaseinfo
+		set level=#{level}
+		where stafferId=#{stafferId}
+	</update>
+		<!-- 人员信息 出境信息-->
+	<update id="expelUpdate" parameterType="ns.major.config.dao.domain.Staff">
+		update nm_staffbaseinfo
+		set passport=#{passport},greenCard=#{greenCard}
+		where stafferId=#{stafferId}
+	</update>
+	<!-- 人员信息 附件 -->
+	<update id="fileUpdate" parameterType="ns.major.config.dao.domain.Staff">
+		update nm_staffbaseinfo
+		set SFilePath=#{SFilePath}
+		where stafferId=#{stafferId};
+	</update>
+</mapper>

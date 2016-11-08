@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ns.major.audit.dao.mapper.LoginAuditExcpMapper">
+	<resultMap type="LoginAuditExcp" id="LoginAuditExcpMap">
+		<id property="loginExceptId" column="loginExceptId"/>
+		<result property="userId" column="userId"/>
+		<result property="loginExceptIp" column="loginExceptIp"/>
+		<result property="loginExceptTime" column="loginExceptTime"/>
+		<result property="LException" column="LException"/>
+	</resultMap>
+	<!-- 获取登录异常日志列表 -->
+	<select id="query" resultMap="LoginAuditExcpMap" >
+		select * from nm_loginexception 
+		<where>
+			<if test="userName!='' and userName!=null">
+				and userName like concat('%',#{userName},'%')
+			</if>
+			<if test="startDate !=null and startDate!=''">
+				and loginExceptTime &gt; #{startDate}
+			</if>
+			<if test="endDate !=null and endDate!=''">
+				and loginExceptTime &lt; concat(#{endDate},' 23:59:59') 
+			</if>
+		</where>
+		order by loginExceptTime desc
+	</select>
+	<!-- 删除一条或多条数据 -->
+	<delete id="delete" parameterType="java.util.List" >
+			delete from nm_loginexception where LoginExceptId in 
+	    <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+	    	 #{item}
+	    </foreach>
+	</delete>
+	<select id="getLoginExcByDate" resultMap="account">
+		select count(*) count from nm_loginexception where LException="密码输入错误" and userId=#{userId} and LoginExceptTime BETWEEN CURDATE() and DATE_SUB(CURDATE(),INTERVAL -1 DAY);
+	</select>
+	<select id="IfIsEnable" parameterType="int" resultType="int">
+		select IsEnable from nm_users where userId=#{0}
+	</select>
+	<insert id="addLogAudit" parameterType="ns.major.audit.dao.domain.LoginAuditExcp" >
+		 insert into nm_loginexception(userId,userName,loginExceptIp,loginExceptTime,lException) values
+		 (#{UserId},#{userName},#{loginExceptIp},Now(),#{LException})
+	</insert>
+	<select id="getSysSafeCof" resultMap="value">
+		select ConfigValue from nm_sysconfig where ConfigId=1
+	</select>
+	<resultMap id="value" type="Integer">
+		<result  column="ConfigValue" jdbcType="INTEGER" javaType="INTEGER"/>
+	</resultMap>
+	<resultMap type="Integer" id="account">  
+	    <result column="count" jdbcType="INTEGER" javaType="Integer" />
+	</resultMap>
+	<update id="lockUser" parameterType="int" >
+	update nm_users set IsEnable=1 where userId=#{0}
+	</update>
+</mapper>

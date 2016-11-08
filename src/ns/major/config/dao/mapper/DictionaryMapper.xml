@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ns.major.config.dao.mapper.DictionaryMapper">
+	<select id="getList" resultType="ns.major.config.dao.domain.Dictionary">
+		select * from nm_dictionary;
+	</select>
+	<!-- 获取国籍列表 -->
+	<select id="getNationalityList" resultType="ns.major.config.dao.domain.Dictionary">
+		select * from nm_dictionary where pid like '20%';
+	</select>
+	<!-- 获取政治面貌列表 -->
+	<select id="getPoliticalStatusList" resultType="ns.major.config.dao.domain.Dictionary">
+		select * from nm_dictionary where pid like '50%';
+	</select>
+	<!-- 获取民族列表 -->
+	<select id="getNationList" resultType="ns.major.config.dao.domain.Dictionary">
+		select * from nm_dictionary where pid like '30%';
+	</select>
+</mapper>

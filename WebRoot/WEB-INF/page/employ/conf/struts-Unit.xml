@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+        "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<!-- 单位管理 -->
+	<package namespace="/employ" name="unit" extends="custom-struts-default">
+		<!-- 资料上报 -->
+		<action name="report" method="report" class="unitAction">
+			<result name="success">/pages/employ/add.jsp</result>
+		</action>
+		
+		<!-- 获取区(县)信息 -->
+		<action name="getCountry" method="getCountry" class="unitAction" />
+		
+		<!-- 保存 -->
+		<action name="save" method="save" class="unitAction" />
+		
+		<!-- 列表数据 -->
+		<action name="list" method="list" class="unitAction">
+			<!-- 资料审核 -->
+			<result name="audit">/pages/employ/audit/list.jsp</result>
+			<!-- 资料查询 -->
+			<result name="report">/pages/employ/report/list.jsp</result>
+		</action>
+		
+		<!-- 资料审核(小窗口) -->
+		<action name="detail" method="detail" class="unitAction">
+			<result name="success">/pages/employ/audit/audit.jsp</result>
+		</action>
+		
+		<!-- 审核操作 -->
+		<action name="update" method="update" class="unitAction" />
+		
+		<!-- 变更通知 -->
+		<action name="photoList" method="photoList" class="unitAction">
+			<result name="success">/pages/employ/change/list.jsp</result>
+		</action>
+		
+		<!-- 变更对比(小窗口) -->
+		<action name="getContrast" method="getContrast" class="unitAction">
+			<result name="success">/pages/employ/change/view.jsp</result>
+		</action>
+		
+		<!-- 组织结构代码判重 -->
+		<action name="credCheck" method="credCheck" class="unitAction" />
+		
+		<!-- 单位名称判重 -->
+		<action name="queryName" method="queryName" class="unitAction" />
+		
+	</package>
+</struts>

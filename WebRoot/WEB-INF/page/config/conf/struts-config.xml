@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+        "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+    <!-- 用户登录 -->
+	<package name="UserLogin" extends="custom-struts-default">
+		<action name="userLogin" method="userLogin" class="userLoginAction">
+			<result name="success">/main.jsp</result>
+			<result name="error">/login.jsp</result>
+		</action>
+		<action name="left" method="left" class="userLoginAction">
+			<result name="success">/left.jsp</result>
+		</action>
+		<!-- 用户登出 -->
+		<action name="logOut" method="logOut" class="userLoginAction" >
+			<result name="success">/login.jsp</result>
+		</action>
+	</package>
+	<!-- 权限管理 -->
+	<package name="UserCoinfig" namespace="/config/user" extends="custom-struts-default">
+	    <!-- 用户配置 -->
+		<action name="list" method="list" class="UserConfigAction">
+			<result name="success">/pages/config/user/list.jsp</result>
+		</action>
+		<action name="delete" method="delete" class="UserConfigAction"></action>
+		<action name="addOneUser" method="addOneUser" class="UserConfigAction">
+			<result name="success">/pages/config/user/add.jsp</result>
+		</action>
+		<action name="add" method="add" class="UserConfigAction">
+		</action>
+		<action name="lockUser" method="lockUser" class="UserConfigAction"></action>
+		<action name="roleallot" method="roleallot" class="UserConfigAction">
+			<result name="success">/pages/config/user/roleallot.jsp</result>
+		</action>
+		<action name="saveRole" method="saveRole" class="UserConfigAction">
+		</action>
+		<action name="userNameCheck" method="userNameCheck" class="UserConfigAction"></action>
+		<action name="pwLenthCheck" method="pwLenthCheck" class="UserConfigAction"></action>
+		<action name="cheakUnit" method="cheakUnit" class="UserConfigAction"></action>
+		<!-- 参数配置-->
+		<action name="getParamset" method="getParamset" class="UserConfigAction">
+			<result name="success">/pages/config/paramset.jsp</result>
+			<result name="error">/commons/error.jsp</result>
+		</action>
+		<action name="savaConfSet" method="savaConfSet" class="UserConfigAction">
+		</action>
+		<!-- 角色配置 -->
+		<action name="getRoleList" method="roleList" class="UserConfigAction">
+			<result name="success">/pages/config/role/list.jsp</result>
+			<result name="error">/commons/error.jsp</result>
+		</action> 
+		<action name="roleDelete" method="roleDelete" class="UserConfigAction"></action>
+		<action name="addOneRole" method="addOneRole" class="UserConfigAction">
+			<result name="success">/pages/config/role/add.jsp</result>
+		</action>
+		<action name="roleAdd" method="roleAdd" class="UserConfigAction"></action>
+		<action name="getPermission" method="getPermission"  class="UserConfigAction">
+			<result name="success">/pages/config/role/permission.jsp</result>
+		</action>
+		<action name="savePrivilege" method="savePrivilege" class="UserConfigAction"></action>
+		<!-- 角色下是否存在用户 -->
+		<action name="checkUser" method="checkUser" class="UserConfigAction"></action>
+		<!-- 角色名字除重 -->
+		<action name="roleNameCheck"  method="roleNameCheck" class="UserConfigAction"></action>
+	</package>
+	<!-- 部门管理 -->
+	<package name="DeptConfig" namespace="/config/department" extends="struts-default">
+	<action name="list" method="list" class="deptConfigAction">
+		<result name="success">/pages/config/department/list.jsp</result>
+		<result name="error">/commons/error.jsp</result>
+	</action>
+	<action name="delete" method="delete" class="deptConfigAction"></action>
+	<action name="addOneDept" method="addOneDept" class="deptConfigAction">
+		<result name="success">/pages/config/department/add.jsp</result>
+	</action>
+	<action name="add" method="add" class="deptConfigAction"></action>
+	<action name="searchStaff" method="searchStaff" class="deptConfigAction">
+		<result name="success">/pages/config/department/personallist.jsp</result>
+	</action>
+	<action name="checkStaff" method="checkStaff" class="deptConfigAction"></action>
+	<action name="deptNameCheck" method="deptNameCheck" class="deptConfigAction"></action>
+	</package>
+	<!--人员管理  -->
+	<package name="staffConf" namespace="/config/personal" extends="custom-struts-default">
+		<action name="list" method="list" class="staffConfigAction">
+			<result name="success">/pages/config/personal/list.jsp</result>
+			<result name="error">/commons/error.jsp</result>
+		</action>
+		<!-- 用于用户配置，得到一个部门的员工名字 -->
+		<action name="getStaff" method="getStaff" class="staffConfigAction"></action>
+		
+		<!-- 用于用户配置，得到一个员工的相应信息 -->
+		<action name="getStaffInfo" method="getStaffInfo" class="staffConfigAction"></action>
+		<action name="delete" method="delete" class="staffConfigAction"></action>
+		<action name="importExcel" method="importExcel" class="staffConfigAction"></action>
+		<!-- 人员查询 预览 -->
+		<action name="view" method="view" class="staffConfigAction">
+			<result name="success">/pages/config/personal/view.jsp</result>
+		</action>
+		<!-- 页面跳转 新增人员 基本资料-->
+		<action name="baseAdd" method="baseAdd" class="staffConfigAction">
+			<result name="success">/pages/config/personal/add/add_1_base.jsp</result>
+		</action>	
+		<!-- 新增人员  基本资料-->
+		<action name="baseSave" method="baseSave" class="staffConfigAction">
+			<result name="success">/pages/config/personal/add/add_2_unit.jsp</result>
+		</action>
+		
+		<!-- 页面跳转 单位信息 -->
+		<action name="unitAdd" method="unitAdd" class="staffConfigAction">
+			<result name="success">/pages/config/personal/add/add_2_unit.jsp</result>
+		</action>	
+		<!-- 新增人员 单位信息 -->
+		<action name="unitSave" method="unitSave" class="staffConfigAction">
+			<result name="success">/pages/config/personal/add/add_3_secret.jsp</result>
+		</action>
+		
+		<!-- 页面跳转 选择密级 -->
+		<action name="secretAdd" method="secretAdd" class="staffConfigAction">
+			<result name="success">/pages/config/personal/add/add_3_secret.jsp</result>
+		</action>	
+		<!-- 新增人员 选择密级 -->
+		<action name="secretSave" method="secretSave" class="staffConfigAction">
+			<result name="success">/pages/config/personal/add/add_4_expel.jsp</result>
+		</action>
+		
+		<!-- 页面跳转 出境信息 -->
+		<action name="expelAdd" method="expelAdd" class="staffConfigAction">
+			<result name="success">/pages/config/personal/add/add_4_expel.jsp</result>
+		</action>	
+		<!-- 新增人员 出境信息 -->
+		<action name="expelSave" method="expelSave" class="staffConfigAction">
+			<result name="success">/pages/config/personal/add/add_5_edu.jsp</result>
+		</action>
+		
+		<!-- 页面跳转 教育经历 -->
+		<action name="eduList" method="eduList" class="staffConfigAction">
+			<result name="success">/pages/config/personal/add/add_5_edu.jsp</result>
+		</action>	
+		<!-- 页面跳转 教育经历 弹出框 -->
+		<action name="eduAdd" method="eduAdd" class="staffConfigAction">
+			<result name="success">/pages/config/personal/staffedu.jsp</result>
+		</action>
+		<!-- 教育经历添加修改 -->
+		<action name="eduSave" method="eduSave" class="staffConfigAction">
+		</action>
+		<!-- 教育经历删除 -->
+		<action name="eduDelete" method="eduDelete" class="staffConfigAction">
+		</action>
+		
+		<!-- 页面跳转 工作经历 -->
+		<action name="jobList" method="jobList" class="staffConfigAction">
+			<result name="success">/pages/config/personal/add/add_6_job.jsp</result>
+		</action>	
+		<!-- 页面跳转 工作经历 弹出框 -->
+		<action name="jobAdd" method="jobAdd" class="staffConfigAction">
+			<result name="success">/pages/config/personal/staffjob.jsp</result>
+		</action>
+		<!-- 工作经历添加修改 -->
+		<action name="jobSave" method="jobSave" class="staffConfigAction">
+		</action>
+		<!-- 工作经历删除 -->
+		<action name="jobDelete" method="jobDelete" class="staffConfigAction">
+		</action>
+		
+		<!-- 页面跳转 家庭成员 -->
+		<action name="familyList" method="familyList" class="staffConfigAction">
+			<result name="success">/pages/config/personal/add/add_7_family.jsp</result>
+		</action>	
+		<!-- 页面跳转 家庭成员 弹出框 -->
+		<action name="familyAdd" method="familyAdd" class="staffConfigAction">
+			<result name="success">/pages/config/personal/familyinfo.jsp</result>
+		</action>
+		<!-- 家庭成员添加修改 -->
+		<action name="familySave" method="familySave" class="staffConfigAction">
+		</action>
+		
+		
+		<!-- 工作经历删除 -->
+		<action name="familyDelete" method="familyDelete" class="staffConfigAction">
+		</action>
+		
+		<!-- 页面跳转 文件上传-->
+		<action name="fileList" method="fileList" class="staffConfigAction">
+			<result name="success">/pages/config/personal/add/add_8_file.jsp</result>
+		</action>
+		<action name="fileAdd" method="fileAdd" class="staffConfigAction"></action>
+		<action name="importModel" method="importModel" class="staffConfigAction"></action>
+	</package>
+	
+</struts>

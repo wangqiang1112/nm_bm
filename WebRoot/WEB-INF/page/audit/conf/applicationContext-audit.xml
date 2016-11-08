@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+http://www.springframework.org/schema/context
+http://www.springframework.org/schema/context/spring-context-4.2.xsd
+http://www.springframework.org/schema/tx
+http://www.springframework.org/schema/tx/spring-tx-4.2.xsd">
+	<!-- 
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">    
+		<property name="dataSource" ref="dataSource" />    
+        <property name="configLocation" value="classpath:ns/example/dao/mapper/classMapper.xml" />  
+    </bean>   
+      -->
+    <bean id="sysService" class="ns.major.audit.service.impl.SysExceptionServiceImpl">  
+    </bean> 
+     
+    <bean id="systemExceptionsAction" class="ns.major.audit.action.SystemExceptionsAction" scope="prototype">
+		<property name="sysService" ref="sysService"/>
+	</bean>
+
+    <bean id="systemExceptionsMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">  
+        <property name="mapperInterface" value="ns.major.audit.dao.mapper.SystemExceptionsMapper"/>  
+        <property name="sqlSessionFactory" ref="sqlSessionFactory" />  
+    </bean> 
+     
+	
+	
+	 <bean id="loginAuditExcpAction" class="ns.major.audit.action.LoginAuditExcpAction" scope="prototype">
+	   <property name="loginExcpService" ref="loginExcpService"/>
+	</bean>
+	<bean id="loginExcpService" class="ns.major.audit.service.impl.LoginAuditExcpServiceImpl">
+	</bean>
+	<bean id="loginAuditExcpMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+	  <property name="mapperInterface" value="ns.major.audit.dao.mapper.LoginAuditExcpMapper"/>  
+        <property name="sqlSessionFactory" ref="sqlSessionFactory" />  
+	</bean> 
+	
+	
+	
+	<bean id="loginAuditAction" class="ns.major.audit.action.LoginAuditAction" scope="prototype">
+		<property name="loginService" ref="loginService"/>
+	</bean>
+	<bean id="loginService" class="ns.major.audit.service.impl.LoginAuditServiceImpl"></bean>
+	<bean id="loginAuditMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+	  	<property name="mapperInterface" value="ns.major.audit.dao.mapper.LoginAuditMapper"/>  
+        <property name="sqlSessionFactory" ref="sqlSessionFactory" />  
+	</bean>
+	
+	
+	
+	<bean id="sysUseAuditAction" class="ns.major.audit.action.SysUseAuditAction" scope="prototype">
+		<property name="sysUseService" ref="sysUseService"/>
+	</bean>
+	<bean id="sysUseService" class="ns.major.audit.service.impl.SysUseAuditServiceImpl"></bean>
+	<bean id="sysUseAuditMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+	  	<property name="mapperInterface" value="ns.major.audit.dao.mapper.SysUseAuditMapper"/>  
+        <property name="sqlSessionFactory" ref="sqlSessionFactory" />  
+	</bean>
+	
+</beans>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ns.major.config.dao.mapper.DeptConfigMapper">
+	<select id="query" parameterType="ns.major.config.query.DeptQuery" resultType="ns.major.config.dao.domain.Department">
+			select d.*,dc.FirstName DPrincPost from nm_department d left join nm_staffbaseinfo s on d.DPrincipalId=s.StafferId
+			left join nm_dictionary dc on s.SPost=dc.dictid
+	<!--  nm_staffbaseinfo s,nm_dictionary dc where d.DPrincipalId=s.StafferId and s.SPost=dc.dictid-->
+	    <where>
+			<if test="departName !=null and departName!=''" >
+				and departName like concat('%',#{departName},'%') 
+			</if>
+			<if test="dPrincipal !=null and dPrincipal!=''" >
+				and dPrincipal like concat('%',#{dPrincipal},'%') 
+			</if>
+	    </where>
+	     order by d.departId desc
+	</select>
+	<delete id="delete" parameterType="int">
+		delete from nm_department where departId =#{0}
+	</delete>
+	<select id="getAllStaff"  resultType="ns.major.config.dao.domain.Staff">
+		select * from nm_staffbaseinfo
+	</select>
+	<insert id="add" parameterType="ns.major.config.dao.domain.Department">
+		insert into nm_department(ParentDepart,DepartName,DPrincipal,DPhone,DDescription,DPrincipalId)
+		values(#{ParentDepart},#{DepartName},#{DPrincipal},#{DPhone},#{DDescription},#{DPrincipalId});
+	</insert>
+	<update id="update" parameterType="ns.major.config.dao.domain.Department"> 
+		update nm_department set ParentDepart=#{ParentDepart},DepartName=#{DepartName},DPhone=#{DPhone}
+		,DDescription=#{DDescription},DPrincipalId=#{DPrincipalId},DPrincipal=#{DPrincipal} where DepartID=#{DepartID}
+	</update>
+	<select id="getDeptById" resultType="ns.major.config.dao.domain.Department" parameterType="int">
+		select * from nm_department where departId =#{0}
+	</select>
+	<select id="getStaffByDept" parameterType="int" resultType="ns.major.config.dao.domain.Staff">
+		select s.*,d.DepartName SDepart_str,dc.FirstName SPost_str from nm_staffbaseinfo s left join nm_department d on 
+		s.SDepart=d.DepartID left join nm_dictionary dc on s.SPost=dc.DictId  where SDepart=#{0}
+	</select>
+	<!-- 判断是否存在相同的部门名字 -->
+	<select id="deptNameCheck" parameterType="java.lang.String" resultMap="account">
+		select count(*) count from nm_department where DepartName=#{0}
+	</select>
+	<resultMap id="account" type="Integer">
+	    <result column="count" jdbcType="INTEGER" javaType="Integer" />
+	</resultMap>
+</mapper>

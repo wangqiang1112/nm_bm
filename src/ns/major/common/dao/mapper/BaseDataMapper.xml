@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ns.major.common.dao.mapper.BaseDataMapper">
+	<select id="getDictionaryByDictid" resultType="ns.major.config.dao.domain.Dictionary">
+    	select * from nm_dictionary where dictId=#{0}
+ 	</select>
+	
+ <select id="getAllUnit" resultType="ns.major.employ.dao.domain.Unit">
+    select * from nm_unit;
+ </select>
+ <select id="getAllDept" resultType="ns.major.config.dao.domain.Department">
+    select * from nm_department; 
+ </select>
+ <select id="getDepartIDByDepartName" parameterType="java.lang.String" resultType="java.lang.Integer">
+ 	select DepartID from nm_department where departName=#{0};
+ </select>
+  <!-- 获取国籍列表 -->
+ <select id="getNationalityList" resultType="ns.major.config.dao.domain.Dictionary">
+	select * from nm_dictionary where pid like '20%';
+ </select>
+ <!-- 获取国籍编号 -->
+ <select id="getNationalityDictId" parameterType="java.lang.String" resultType="java.lang.Integer">
+ 	select dictId from nm_dictionary where pid like '20%' and firstName like concat('%',#{0},'%');
+ </select>
+ <!-- 获取政治面貌列表 -->
+ <select id="getPoliticalStatusList" resultType="ns.major.config.dao.domain.Dictionary">
+	select * from nm_dictionary where pid like '50%';
+ </select>
+ <!-- 获取政治面貌编号 -->
+ <select id="getPoliticalStatusDictId" parameterType="java.lang.String" resultType="java.lang.Integer">
+ 	select dictId from nm_dictionary where pid like '50%' and firstName like concat('%',#{0},'%');
+ </select>
+ <!-- 获取民族列表 -->
+ <select id="getNationList" resultType="ns.major.config.dao.domain.Dictionary">
+	select * from nm_dictionary where pid like '30%';
+ </select>
+ 
+ <!-- 获取民族编号 -->
+ <select id="getNationDictId" parameterType="java.lang.String" resultType="java.lang.Integer">
+ 	select dictId from nm_dictionary where pid like '30%' and firstName like concat('%',#{0},'%');
+ </select>
+ <!-- 获取职务列表 -->
+ <select id="getSPostList" resultType="ns.major.config.dao.domain.Dictionary">
+	select * from nm_dictionary where pid like '60%';
+ </select>
+ <!-- 获取职务编号 -->
+ <select id="getSPostDictId" parameterType="java.lang.String" resultType="java.lang.Integer">
+ 	select dictId from nm_dictionary where pid like '60%' and firstName like concat('%',#{0},'%');
+ </select>
+ <!-- 获取职称列表 -->
+ <select id="getSJobList" resultType="ns.major.config.dao.domain.Dictionary">
+	select * from nm_dictionary where pid like '70%';
+ </select>
+ <!-- 获取职称编号 -->
+ <select id="getSJobDictId" parameterType="java.lang.String" resultType="java.lang.Integer">
+ 	select dictId from nm_dictionary where pid like '70%' and firstName like concat('%',#{0},'%')
+ </select>
+ <!--根据单位id获取单位 -->
+ <select id="getUnitById" parameterType="int" resultType="ns.major.employ.dao.domain.Unit">
+ 	select * from nm_unit where unitId=#{0};
+ </select>
+ <!-- 根据字典名字找到对应Id -->
+ <select id="getDicIdByName" parameterType="java.lang.String" resultType="int">
+ 	select DictId from nm_dictionary where FirstName=#{FirstName}
+ </select>
+</mapper>

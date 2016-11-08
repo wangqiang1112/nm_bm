@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ns.major.config.dao.mapper.StaffJobMapper">
+	<insert id="add"  parameterType="ns.major.config.dao.domain.StaffJob">
+		insert into nm_staffjob
+		(stafferId,stafferName,WStartTime,WEndTime,WUnitName,
+			WPost,WJob,WDuty,wwitness,WPhone,WRemarks)
+		values(#{stafferId},#{stafferName},#{WStartTime},#{WEndTime},#{WUnitName},
+			#{WPost},#{WJob},#{WDuty},#{wwitness},#{WPhone},#{WRemarks});
+	</insert>
+	<update id="update"  parameterType="ns.major.config.dao.domain.StaffJob">
+		update nm_staffjob set
+		stafferId=#{stafferId},stafferName=#{stafferName},WStartTime=#{WStartTime},
+		WEndTime=#{WEndTime},WUnitName=#{WUnitName},WPost=#{WPost},WJob=#{WJob},
+		WDuty=#{WDuty},wwitness=#{wwitness},WPhone=#{WPhone},WRemarks=#{WRemarks}
+		where jobID=#{jobID};
+	</update>
+	<delete	 id="del" parameterType="int">
+		delete from nm_staffjob where jobID=#{0};
+	</delete>
+	<select id="getStaffIdByJobID" parameterType="int" resultType="int">
+		select stafferId from nm_staffjob where jobID=#{0};
+	</select>
+	
+	<select id="getList" parameterType="int" resultType="ns.major.config.dao.domain.StaffJob">
+		select * from nm_staffjob where stafferId=#{0};
+	</select>
+	<select id="getStaffJobByID" parameterType="int" resultType="ns.major.config.dao.domain.StaffJob">
+		select * from nm_staffjob where jobID=#{0};
+	</select>
+</mapper>

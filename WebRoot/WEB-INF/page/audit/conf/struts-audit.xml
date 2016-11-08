@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+        "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+    <!-- 系统异常 -->
+	<package name="systemExceptionsAudit" namespace="/audit/sysException" extends="custom-struts-default">
+		<action name="list" method="list" class="systemExceptionsAction">
+		    <result name="success">/pages/audit/sysexception.jsp</result>
+		    <result name="error">/commons/error.jsp</result>
+		</action>
+	    <action name="delete" method="delete" class="systemExceptionsAction"></action>
+	    <action name="export" method="export" class="systemExceptionsAction"></action>
+	</package>
+	
+	<!-- 登录异常 -->
+	<package name="loginExceptionAudit" namespace="/audit/loginException" extends="custom-struts-default">
+		<action name="list" method="list" class="loginAuditExcpAction">
+			<result name="success" >/pages/audit/loginexception.jsp</result>
+			<result name="error">/commons/error.jsp</result>
+		</action>
+		<action name="delete" method="delete" class="loginAuditExcpAction"></action>
+		<action name="export" method="export" class="loginAuditExcpAction"></action>
+	</package>
+	
+	<!-- 用户登录 -->
+	<package namespace="/audit/loginAudit" name="/audit/loginAudit" extends="custom-struts-default" >
+		<!-- 用户登录列表 -->
+		<action name="list" method="list" class="loginAuditAction">
+			<result name="success" >/pages/audit/userlogin.jsp</result>
+		</action>
+		
+		<!-- 删除 -->
+		<action name="delete" method="delete" class="loginAuditAction" />
+		
+		<!-- 导出 -->
+		<action name="export" method="export" class="loginAuditAction" />
+	</package>
+	
+	
+	<!-- 系统使用 -->
+	<package namespace="/audit/sysUseAudit" name="/audit/sysUseAudit" extends="custom-struts-default" >
+		<!-- 系统使用列表 -->
+		<action name="list" method="list" class="sysUseAuditAction">
+			<result name="success" >/pages/audit/sysuse.jsp</result>
+		</action>
+		
+		<!-- 删除 -->
+		<action name="delete" method="delete" class="sysUseAuditAction" />
+		
+		<!-- 导出 -->
+		<action name="export" method="export" class="sysUseAuditAction" />
+	</package>
+</struts>

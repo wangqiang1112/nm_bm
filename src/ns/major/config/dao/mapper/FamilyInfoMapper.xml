@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ns.major.config.dao.mapper.FamilyInfoMapper">
+	<insert id="add"  parameterType="ns.major.config.dao.domain.FamilyInfo">
+		insert into nm_familyinfo
+		(stafferId,stafferName,relation,FName,FSex,FAge,
+		FNationality,FUnit,FPost,FJob,FAddress,FPhone)
+		values(#{stafferId},#{stafferName},#{relation},#{FName},#{FSex},#{FAge},
+			#{FNationality},#{FUnit},#{FPost},#{FJob},#{FAddress},#{FPhone});
+	</insert>
+	<update id="update"  parameterType="ns.major.config.dao.domain.FamilyInfo">
+		update nm_familyinfo set
+		stafferId=#{stafferId},stafferName=#{stafferName},relation=#{relation},
+		FName=#{FName},FSex=#{FSex},FAge=#{FAge},FNationality=#{FNationality},FUnit=#{FUnit},
+		FPost=#{FPost},FJob=#{FJob},FAddress=#{FAddress},FPhone=#{FPhone}
+		where infoID=#{infoID}
+	</update>
+	<delete	 id="del" parameterType="int">
+		delete from nm_familyinfo where infoID=#{0};
+	</delete>
+	<select id="getStaffIdByInfoID" parameterType="int" resultType="int">
+		select stafferId from nm_familyinfo where infoID=#{0};
+	</select>
+	
+	<select id="getList" parameterType="int" resultType="ns.major.config.dao.domain.FamilyInfo">
+		select * from nm_familyinfo where stafferId=#{0};
+	</select>
+	<select id="getFamilyInfoByID" parameterType="int" resultType="ns.major.config.dao.domain.FamilyInfo">
+		select * from nm_familyinfo where infoID=#{0};
+	</select>
+</mapper>

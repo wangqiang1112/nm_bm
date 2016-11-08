@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ns.major.business.dao.mapper.TaskUnitMapper">
+	<!-- 任务接收数据 -->
+	<select id="list" parameterType="ns.major.business.query.TaskUnitQuery" resultType="ns.major.business.dao.domain.Task" >
+		select a.*,b.UnitName from nm_tasks a , nm_unit b
+		<where>
+			a.ReceiveUnit = b.UnitId and a.Status &lt;&gt; 5 and a.IssuedTime &lt;= now()
+			<if test=" null != taskName and '' != taskName " >
+				and a.TaskName like concat('%',#{taskName},'%')
+			</if>
+			<if test=" null != departId and '' != departId " >
+				and a.DepartId = #{departId}
+			</if>
+			<if test=" null != issuedTime and '' != issuedTime " >
+				and a.IssuedTime like concat('%',#{issuedTime},'%')
+			</if>
+			<if test=" null != unitId and 0 != unitId ">
+				and a.ReceiveUnit = #{unitId}
+			</if>
+			order by a.ProcessTime desc
+		</where> 
+	</select>
+	<!-- 任务预警数据 -->
+	<select id="alertedList" resultType="ns.major.business.dao.domain.Task" >
+		select a.*,b.UnitName from nm_tasks a , nm_unit b 
+		where a.ReceiveUnit = b.UnitId and a.Status &lt;&gt; 5 and a.Status &lt;&gt; 4
+		and (select datediff(now(),a.IssuedTime)) > a.TaskTerm order by a.ProcessTime desc
+	</select>
+	<!-- 任务接收(预警)处理 -->
+	<update id="update" parameterType="ns.major.business.dao.domain.Task" >
+		update nm_tasks a set 
+		a.TaskDetail = #{taskDetail} , a.FeedBackDetail = #{feedBackDetail} , a.FeedBackFileName = #{feedBackFileName} ,a.FeedBackFilePath = #{feedBackFilePath} , a.Status = #{status} , a.ProcessTime = now()
+		where a.TaskId = #{taskId}
+	</update>
+	<!-- 获取任务详情 -->
+	<select id="query" resultType="ns.major.business.dao.domain.Task" >
+		select * from nm_tasks a where a.TaskId = #{taskId}
+	</select>
+	
+
+</mapper>
